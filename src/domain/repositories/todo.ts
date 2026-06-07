@@ -5,7 +5,7 @@ import type { TodoNotFound } from "../errors/todos";
 
 interface ITodoRepository {
     findById(id: TodoId): Effect.Effect<Todo, TodoNotFound>;
-    findAll(): Effect.Effect<Todo[]>;
+    findAll(): Effect.Effect<readonly Todo[]>;
     save(todo: Todo): Effect.Effect<Todo>;
     delete(id: TodoId): Effect.Effect<void, TodoNotFound>;
 }

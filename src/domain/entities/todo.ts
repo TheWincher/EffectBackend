@@ -1,12 +1,14 @@
-import { Effect } from "effect";
-import type { TodoId } from "../value-objects/todo";
+import { Effect, Schema } from "effect";
 import { TodoAlreadyCompleted } from "../errors/todos";
+import { TodoId } from "../value-objects/todo";
 
-export type Todo = {
-  id: TodoId;
-  title: string;
-  completed: boolean;
-};
+export const TodoSchema = Schema.Struct({
+    id : TodoId,
+    title: Schema.String,
+    completed: Schema.BooleanFromUnknown,
+});
+
+export type Todo = Schema.Schema.Type<typeof TodoSchema>;
 
 export function completeTodo(todo: Todo) {
   if (todo.completed === true) {

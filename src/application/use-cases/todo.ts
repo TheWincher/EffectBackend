@@ -1,4 +1,4 @@
-import { Effect } from "effect";
+import { Effect, Schema } from "effect";
 import { TodoId } from "../../domain/value-objects/todo";
 import { TodoRepository } from "../../domain/repositories/todo";
 import { completeTodo, type Todo } from "../../domain/entities/todo";
@@ -13,8 +13,10 @@ export function GetTodoById(id: TodoId) {
 export function CreateTodo(title: string) {
   return Effect.gen(function* () {
     const repo = yield* TodoRepository;
+    const todoId = yield* Schema.decodeUnknown(TodoId)(crypto.randomUUID());
+
     const newTodo = {
-      id: TodoId(crypto.randomUUID()),
+      id: todoId,
       title,
       completed: false,
     } satisfies Todo;

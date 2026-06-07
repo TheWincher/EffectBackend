@@ -1,10 +1,10 @@
 import { NodeRuntime } from "@effect/platform-node";
 import { Layer } from "effect";
 import { ServerLive } from "./infrastructure/http/server";
-import { TodoRepositoryInMemoryLayer } from "./infrastructure/repositories/TodoRepositoryInMemory";
+import { TodoRepositorySqliteLayer } from "./infrastructure/repositories/TodoRepositorySqlite";
 
 NodeRuntime.runMain(
   Layer.launch(
-    Layer.provide(ServerLive, TodoRepositoryInMemoryLayer)
+    Layer.provide(ServerLive, TodoRepositorySqliteLayer)
   )
 )

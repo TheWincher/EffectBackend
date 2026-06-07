@@ -1,5 +1,4 @@
-export type TodoId = string & {__brand: "TodoId"};
+import { Schema } from "effect";
 
-export function TodoId(value: string): TodoId {
-    return value as TodoId;
-}
+export const TodoId = Schema.String.pipe(Schema.brand("TodoId"));
+export type TodoId = Schema.Schema.Type<typeof TodoId>;

@@ -21,7 +21,8 @@ export const router = HttpRouter.empty.pipe(
         Schema.Struct({ id: Schema.UUID }),
       );
 
-      const todo = yield* GetTodoById(TodoId(params.id));
+      const todoId = yield* Schema.decodeUnknown(TodoId)(params.id);
+      const todo = yield* GetTodoById(todoId);
       return yield* HttpServerResponse.json(todo);
     }).pipe(
       Effect.catchTag("TodoNotFound", () =>
@@ -47,7 +48,8 @@ export const router = HttpRouter.empty.pipe(
         Schema.Struct({ id: Schema.UUID }),
       );
 
-      const todo = yield* CompleteTodo(TodoId(params.id));
+      const todoId = yield* Schema.decodeUnknown(TodoId)(params.id);
+      const todo = yield* CompleteTodo(todoId);
       return yield* HttpServerResponse.json(todo);
     }).pipe(
       Effect.catchTag("TodoNotFound", () =>
@@ -72,7 +74,9 @@ export const router = HttpRouter.empty.pipe(
         Schema.Struct({ id: Schema.UUID }),
       );
 
-      yield* DeleteTodoById(TodoId(params.id));
+      const todoId = yield* Schema.decodeUnknown(TodoId)(params.id);
+
+      yield* DeleteTodoById(todoId);
       return yield* HttpServerResponse.empty({ status: 204 });
     }).pipe(
       Effect.catchTag("TodoNotFound", () =>
