@@ -1,0 +1,22 @@
+{
+  "name": "effect_backend",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@effect/platform": "^0.96.1",
+    "@effect/platform-node": "^0.107.0",
+    "@effect/sql": "^0.51.1",
+    "@effect/sql-sqlite-bun": "^0.52.0",
+    "effect": "^3.21.3"
+  },
+  "trustedDependencies": [
+    "@parcel/watcher"
+  ]
+}
