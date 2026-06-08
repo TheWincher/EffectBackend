@@ -9,6 +9,7 @@ export const ServerLive = Layer.unwrapEffect(
   Effect.gen(function* () {
     const config = yield* ConfigLive;
     return HttpServer.serve(router).pipe(
+      HttpServer.withLogAddress,
       Layer.provide(NodeHttpServer.layer(createServer, { port: config.port })),
     );
   }),
