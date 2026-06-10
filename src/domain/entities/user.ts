@@ -9,10 +9,13 @@ export const User = Schema.Struct({
   username: Schema.String,
   password: HashedPassword,
   role: UserRole,
-  createdAt: Schema.Date,
-  updatedAt: Schema.Date,
+  createdAt: Schema.Union(Schema.Date, Schema.DateFromSelf),
+  updatedAt: Schema.Union(Schema.Date, Schema.DateFromSelf),
 });
 export type User = Schema.Schema.Type<typeof User>;
+
+export const UserResponse = User.pipe(Schema.omit("password"));
+export type UserResponse = Schema.Schema.Type<typeof UserResponse>;
 
 export function createUser(username: string, hashedPassword: HashedPassword) {
   const currDate = new Date();

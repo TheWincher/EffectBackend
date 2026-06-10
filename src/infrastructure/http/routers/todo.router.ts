@@ -1,4 +1,5 @@
 import {
+  HttpMiddleware,
   HttpRouter,
   HttpServerRequest,
   HttpServerResponse,
@@ -12,6 +13,7 @@ import {
   GetAllTodos,
   GetTodoById,
 } from "../../../application/use-cases/todo";
+import { AuthMiddleware } from "../middlewares/auth.middleware";
 
 export const todoRouter = HttpRouter.empty.pipe(
   HttpRouter.get(
@@ -85,4 +87,5 @@ export const todoRouter = HttpRouter.empty.pipe(
     ),
   ),
   HttpRouter.prefixAll("/todo"),
+  HttpRouter.use(AuthMiddleware),
 );

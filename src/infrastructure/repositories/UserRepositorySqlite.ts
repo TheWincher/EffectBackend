@@ -20,7 +20,11 @@ export const UserRepositorySqliteLayer = Layer.effect(
           }
 
           return yield* Schema.decodeUnknown(User)(rows[0]);
-        }).pipe(Effect.catchTag("UserNotFound", Effect.fail), Effect.orDie),
+        }).pipe(
+          Effect.catchAll((err) =>
+            err._tag === "UserNotFound" ? Effect.fail(err) : Effect.die(err),
+          ),
+        ),
       findByUsername: (username) =>
         Effect.gen(function* () {
           const rows =
@@ -31,10 +35,14 @@ export const UserRepositorySqliteLayer = Layer.effect(
           }
 
           return yield* Schema.decodeUnknown(User)(rows[0]);
-        }).pipe(Effect.catchTag("UserNotFound", Effect.fail), Effect.orDie),
+        }).pipe(
+          Effect.catchAll((err) =>
+            err._tag === "UserNotFound" ? Effect.fail(err) : Effect.die(err),
+          ),
+        ),
       save: (user) =>
         Effect.gen(function* () {
-          yield* client`INSERT INTO users (id, username, password, role, createdAt, updatedAt) VALUES (${user.id}, ${user.username}, ${user.password}, ${user.role}, ${user.createdAt}, ${user.updatedAt})`;
+          yield* client`INSERT INTO users (id, username, password, role, createdAt, updatedAt) VALUES (${user.id}, ${user.username}, ${user.password}, ${user.role}, ${user.createdAt.toISOString()}, ${user.updatedAt.toISOString()})`;
 
           return user;
         }).pipe(Effect.orDie),

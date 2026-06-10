@@ -13,8 +13,8 @@ export function Register(username: string, rawPassword: RawPassword) {
     const userRepo = yield* UserRepository;
 
     yield* userRepo.findByUsername(username).pipe(
-      Effect.catchTag("UserNotFound", () => Effect.void),
       Effect.flatMap(() => Effect.fail(new UsernameAlreadyExists())),
+      Effect.catchTag("UserNotFound", () => Effect.void),
     );
 
     const passwordHasher = yield* PasswordHasher;

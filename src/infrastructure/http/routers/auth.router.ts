@@ -11,6 +11,7 @@ import {
   InvalidPassword,
 } from "../../../domain/errors/user";
 import { JwtService } from "../../auth/jwt";
+import { UserResponse } from "../../../domain/entities/user";
 
 export const authRouter = HttpRouter.empty.pipe(
   HttpRouter.post(
@@ -27,8 +28,9 @@ export const authRouter = HttpRouter.empty.pipe(
       );
 
       const user = yield* Register(body.username, rawPassword);
+      const response = yield* Schema.encode(UserResponse)(user);
 
-      return yield* HttpServerResponse.json(user, { status: 201 });
+      return yield* HttpServerResponse.json(response, { status: 201 });
     }).pipe(
       Effect.catchTag("UsernameAlreadyExists", () =>
         HttpServerResponse.json(
